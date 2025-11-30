@@ -1,4 +1,4 @@
-# Performative Music Recommender
+# Performative Music Recommender (TESTING)
 
 ## 1) Executive Summary
 
@@ -239,12 +239,5 @@ Planned and stretch improvements:
 
 ## 7) Links (Required)
 
-* **GitHub Repo:** `<INSERT-REPO-URL>`
+* **GitHub Repo:** `<https://github.com/SJ-Jain-systems/DS2022_FinalProject_PerformativeMusicReccomender>`
 * **Public Cloud App (optional):** `<INSERT-CLOUD-URL>`
-
----
-
-You can paste this whole section into your `README.md` and then:
-
-* Add your repo URL in section 7.
-* Add an architecture PNG and tweak any wording to match your exact filenames or implementation details.
