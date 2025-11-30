@@ -1,0 +1,300 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Performative Music Recommender</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --fg: #111827;
+        --card-bg: #ffffff;
+        --card-border: #e5e7eb;
+        --muted: #6b7280;
+        --button-bg: #111827;
+        --button-fg: #f9fafb;
+        --select-bg: #ffffff;
+        --select-fg: #111827;
+      }
+
+      body.dark-mode {
+        --bg: #020617;
+        --fg: #e5e7eb;
+        --card-bg: #020617;
+        --card-border: #374151;
+        --muted: #9ca3af;
+        --button-bg: #f78c00;
+        --button-fg: #111827;
+        --select-bg: #020617;
+        --select-fg: #e5e7eb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 0 16px 40px;
+        background: var(--bg);
+        color: var(--fg);
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      h1 {
+        margin-bottom: 4px;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      button {
+        padding: 8px 10px;
+        font-size: 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        background: var(--button-bg);
+        color: var(--button-fg);
+        font-weight: 500;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      .card {
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-top: 12px;
+        background: var(--card-bg);
+      }
+
+      /* Header / toggle */
+      .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .toggle-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: #e5e7eb;
+        transition: 0.2s;
+        border-radius: 999px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.2s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #f97316;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+
+      /* Song picker layout */
+      .song-column {
+        flex: 1 1 220px;
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .song-column label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .combo {
+        position: relative;
+        width: 100%;
+      }
+
+      .combo-input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid var(--card-border);
+        background: var(--select-bg);
+        color: var(--select-fg);
+        font-size: 14px;
+      }
+
+      .combo-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        max-height: 220px;
+        overflow-y: auto;
+        display: none;
+        z-index: 50;
+      }
+
+      .combo-option {
+        padding: 8px 10px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .combo-option:hover {
+        background: rgba(0, 0, 0, 0.07);
+      }
+
+      @media (max-width: 640px) {
+        .header-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .song-column {
+          min-width: 100%;
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header-bar">
+      <div>
+        <h1>Performative Music Recommender</h1>
+        <p class="muted">
+          Per·for·ma·tive, done or expressed insincerely or inauthentically,
+          typically with the intention of impressing others or improving one's
+          own image. Have you ever wanted to be more performative? Pick 3 songs
+          you like, and I’ll recommend 1 similar song that is similar enough and
+          still considered performative! Grab a matcha, buy a labubu, and put a
+          carabiner on your waist! This app features artists such as Clairo, Beabadoobee, Big Theif, Keshi, & Faye Webster!
+        </p>
+      </div>
+      <div class="toggle-wrapper">
+        <span>Dark mode</span>
+        <label class="switch">
+          <input type="checkbox" id="themeToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
+
+    <div class="row">
+      <button id="ingestBtn">Load Music!</button>
+      <span id="ingestResult" class="muted"></span>
+    </div>
+
+    <!-- Only 3 searchable boxes -->
+    <div class="row" style="margin-top:16px;">
+      <div class="song-column">
+        <label>Song 1</label>
+        <div class="combo" data-index="0">
+          <input
+            type="text"
+            class="combo-input"
+            placeholder="Search by artist or title…"
+            autocomplete="off"
+          />
+          <div class="combo-dropdown"></div>
+        </div>
+      </div>
+
+      <div class="song-column">
+        <label>Song 2</label>
+        <div class="combo" data-index="1">
+          <input
+            type="text"
+            class="combo-input"
+            placeholder="Search by artist or title…"
+            autocomplete="off"
+          />
+          <div class="combo-dropdown"></div>
+        </div>
+      </div>
+
+      <div class="song-column">
+        <label>Song 3</label>
+        <div class="combo" data-index="2">
+          <input
+            type="text"
+            class="combo-input"
+            placeholder="Search by artist or title…"
+            autocomplete="off"
+          />
+          <div class="combo-dropdown"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:12px;">
+      <button id="tasteBtn">Recommend From My Taste</button>
+    </div>
+
+    <div
+      id="status"
+      class="muted"
+      style="margin-top: 10px; min-height: 18px;"
+    ></div>
+    <div id="result"></div>
+
+    <script defer src="/static/app.js"></script>
+  </body>
+</html>
