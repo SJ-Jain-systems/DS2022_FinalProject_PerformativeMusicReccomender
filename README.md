@@ -172,7 +172,7 @@ curl http://localhost:8080/health
 
 ### Sample Output 
 
-![Input given, Laufey — From The Start, Laufey — Dreamer, & TV Girl — Blue Hair ](<Screenshot 2025-11-30 222732.png>)
+![Input given, Laufey — From The Start, Laufey — Dreamer, & TV Girl — Blue Hair ](<Test.png>)
 
 ### Functionality
 
