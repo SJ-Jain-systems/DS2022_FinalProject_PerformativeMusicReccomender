@@ -227,11 +227,10 @@ Planned and stretch improvements:
   * CI workflow to run tests and build the Docker image on each push.
 * **Cloud deployment**
 
-  * Deploy to a public cloud (e.g., Azure, Render, or Railway) with a stable URL for extra credit.
+  * Deploy to a public cloud (e.g., Azure, Render, or Railway) with a stable URL.
 
 ---
 
 ## 7) Links (Required)
 
 * **GitHub Repo:** `<https://github.com/SJ-Jain-systems/DS2022_FinalProject_PerformativeMusicReccomender>`
-* **Public Cloud App (optional):** `<INSERT-CLOUD-URL>`
