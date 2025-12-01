@@ -170,6 +170,10 @@ curl http://localhost:8080/health
 
 ## 5) Results & Evaluation
 
+### Sample Output 
+
+![Input given, Laufey — From The Start, Laufey — Dreamer, & TV Girl — Blue Hair ](<Screenshot 2025-11-30 222732.png>)
+
 ### Functionality
 
 * End-to-end workflow works:
