@@ -17,57 +17,43 @@
 * **Containerization with Docker** – reproducible build and one-command run on a clean machine.
 * **Structure** – HTML UI with a python back end pulling from an assets.csv along with a requirements.txt.
 
-### Architecture Overview
+### Architecture Overview & Project Structure
 
-High-level flow:
+![Architecture Diagram](assets/Architect.png)
 
-1. **Assets layer**
 
-   * `assets/music.csv` – curated dataset of ~250 “performative” songs
-     (Laufey, Beabadoobee, Big Thief, Clairo, Mitski, boygenius, TV Girl, Faye Webster, The Marías, Radiohead, Men I Trust, Malcolm Todd, Shelly, wave to earth, Suki Waterhouse, Keshi, Chappell Roan, Steve Lacy, etc.).
-2. **Pipeline (`src/pipeline.py`)**
+The project structure is as follows:
+PerformativeMusicRecommender/
+│
+├── assets/
+│   └── music.csv                 # My sample dataset of performative music
+│
+├── src/
+│   ├── __init__.py
+│   ├── app.py                    # Main Flask application 
+│   ├── config.py                 # App settings 
+│   ├── db.py                     # SQLite database logic
+│   ├── pipeline.py               # Ingest pipeline (reads CSV → DB)
+│   └── recommender.py            # Embeddings + Cosine similarity logic
+│
+├── static/
+│   └── app.js                    # Frontend JS (searchable dropdowns, dark mode)
+│
+├── templates/
+│   └── index.html                # Frontend UI (dark/light theme, dropdown search)
+│
+├── tests/
+│   ├── test_health.py            # Basic health endpoint test
+│   └── test_reccomend.py         # Recommend logic test
+│
+├── .env                          # Local environment variables (NOT committed)
+├── .env.example                  # Template env file for others
+├── Dockerfile                    # Docker build for local development
+├── requirements.txt              # Python dependencies
+├── run.sh                        # Convenience script to run locally
+├── README.md                     # Project documentation
+└── LICENSE                       # License for the project (Using MIT license as a sample)
 
-   * Reads the CSV.
-   * Cleans/validates rows.
-   * Builds text features from *title, artist, album, genre, tags, description*.
-   * Uses a vectorizer (e.g., TF-IDF) to turn those into vectors.
-   * Stores songs in **SQLite** and vectors as serialized blobs.
-3. **Recommender (`src/recommender.py`)**
-
-   * Loads vectors into a SciPy sparse matrix.
-   * Computes **cosine similarity** between liked songs and candidates.
-   * Aggregates similarity over 3 liked songs and returns the best match, excluding the input songs themselves.
-4. **Flask App (`src/app.py`)**
-
-   * Endpoints:
-
-     * `GET /` – serve the HTML UI.
-     * `GET /health` – health check.
-     * `POST /ingest` – run the pipeline and (re)populate the DB.
-     * `GET /songs` – return all songs for the front-end dropdowns.
-     * `GET /recommend` – single-item recommendation (original API).
-     * `POST /recommend_from_likes` – main endpoint: recommend from 3 liked song IDs; rejects duplicate inputs and never recommends one of the liked songs back.
-5. **Front-End (`templates/index.html`, `static/app.js`, `static/styles`)**
-
-   * Title & blurb explaining “performative” taste.
-   * **Three search boxes**:
-
-     * Search-as-you-type over `artist — title` labels.
-     * Dropdown still scrollable over the full catalog.
-   * “Load Music!” / “Ingest / Refresh DB” button to trigger `/ingest`.
-   * “Recommend From My Taste” button calls `/recommend_from_likes`.
-   * Result card shows:
-
-     * Artist, title
-     * Album, genre, tags, description
-     * Similarity score (a rescaled cosine score for nicer UI).
-   * **Dark mode toggle** (persists via `localStorage`) that switches CSS variables.
-
-> You can include an architecture diagram PNG in `assets/architecture.png` and embed it here:
-
-```markdown
-![Architecture Diagram](assets/architecture.png)
-```
 
 ### Data / Models / Services
 
