@@ -10,13 +10,12 @@
 
 ## 2) System Overview
 
-### Course Concept(s)
-
-This project intentionally uses several concepts from the course:
+### Course Concepts
 
 * **Data pipelines** – ingesting a CSV of songs into a SQLite DB and generating a sparse vector matrix used for recommendations.
 * **Flask API** – Rest endpoints for ingesting data, querying songs, health checks, and generating recommendations.
 * **Containerization with Docker** – reproducible build and one-command run on a clean machine.
+* **Structure** – HTML UI with a python back end pulling from an assets.csv along with a requirements.txt.
 
 ### Architecture Overview
 
@@ -72,13 +71,11 @@ High-level flow:
 
 ### Data / Models / Services
 
-* **Data source:** hand-curated CSV (`assets/music.csv`)
+* **Data source:** Curated CSV via 10 friend's opinion on performative music (`assets/music.csv`)
 * **Fields:** `item_id, title, artist, album, genre, tags, description`
-* **Size:** ~250 rows, 7 columns, <100 KB.
-* **Model:** simple TF-IDF-style vectorization + cosine similarity (no external ML model).
+* **Size:** 250 rows, 7 columns, <100 KB.
+* **Model:** simple TF-IDF-style vectorization + cosine similarity (no external ML model), it essentially converts song meta data to vectors and compares the vectors by picking the most similar ones.
 * **Services:** single Flask service running in a Docker container.
-
-
 
 ## 3) How to Run (Local with Docker)
 
@@ -112,8 +109,7 @@ curl http://localhost:8080/health
 1. Open `http://localhost:9999/`.
 2. Click **“Load Music!”** to call `POST /ingest` and load the CSV into SQLite + build vectors.
 3. In each of the 3 search boxes:
-
-   * Start typing an **artist or title** (e.g., “Laufey”, “Big Thief”, “Kyoto”).
+   * Start typing an **artist or title** (e.g., “Laufey”, “Big Thief”, "Clairo").
    * Pick from the dropdown (`Artist — Title`).
 4. Click **“Recommend From My Taste”**.
 5. See a result card with:
@@ -128,17 +124,16 @@ curl http://localhost:8080/health
 
 ### Why this concept?
 
-* I wanted something fun and personal that still exercised **data pipelines**, **Flask APIs**, and **Docker containerization**, which are core course concepts. 
-* A music recommender is easy to interact with and provides visible feedback that the pipeline and model are working.
+* I wanted something fun and personal that still exercised **data pipelines**, **Flask APIs**, and **Docker containerization**, which are core course concepts. A music recommender is easy to interact with and provides visible feedback that the pipeline and model are working. My friend JM struggle's to find performative music making it a meaningful project & also an early birthday gift.
 
 ### Alternatives Considered
 
 * **Static Jupyter notebook** instead of a web UI:
 
-  * Rejected because it doesn’t practice API design or containerized deployment.
+  * Rejected because it doesn’t practice API design or containerized deployment, and would probably make for a bad birthday gift.
 * **Heavier model (e.g., sentence embeddings or a remote LLM API):**
 
-  * Rejected to keep the project self-contained, deterministic, and fast to run inside the container.
+  * Rejected to keep the project self-contained, deterministic, and fast to run inside the container. It was hard to make it similar to performative music without external data.
 * **Remote DB (Postgres/Mongo):**
 
   * SQLite is sufficient for a small catalog and keeps setup simple.
@@ -146,11 +141,11 @@ curl http://localhost:8080/health
 ### Tradeoffs
 
 * **Simplicity vs. sophistication:**
-  A TF-IDF-like cosine model is simple and explainable, but less powerful than modern embedding models. It’s enough to demonstrate the concept.
+  A TF-IDF-like cosine model is simple and explainable, but less powerful than modern embedding models. It’s enough to demonstrate the concept, and put it into use.
 * **Single service vs. microservices:**
-  Everything runs in one containerized Flask app, which limits scalability but simplifies deployment and grading.
+  Everything runs in one containerized Flask app, which limits scalability but simplifies deployment and testing.
 * **Rescaled similarity scores:**
-  I rescale cosine similarity for display (e.g., multiply by ~1.8 and cap at 0.99) so “good” matches look more intuitive to users, while keeping the raw cosine score available in the API response.
+  I rescaled the cosine similarity for display so “good” matches look more intuitive to users, while keeping the raw cosine score available in the API response. This made it easier for JM to interpret the results and find music he liked.
 
 ### Security / Privacy
 
@@ -160,7 +155,7 @@ curl http://localhost:8080/health
 
   * `/recommend_from_likes` requires a list of exactly 3 integers.
   * Rejects duplicates so users must pick three distinct songs.
-  * Recommendation explicitly excludes the liked song IDs from candidates.
+  * Recommendation explicitly excludes the liked song IDs from user.
 
 ### Ops / Limitations
 
@@ -168,8 +163,7 @@ curl http://localhost:8080/health
 * No metrics/monitoring system yet, but the architecture supports adding them.
 * Known limitations:
 
-  * Small, hand-curated dataset.
-  * Only supports 3 liked songs and one recommended song.
+  * Small dataset.
   * No persistence for user histories or feedback.
 
 ---
@@ -188,7 +182,7 @@ curl http://localhost:8080/health
 
   * Dark/light mode toggle.
   * Clear validation messages (e.g., “Please choose 3 different songs,” “No songs in our database, click Load Music,” etc.).
-  * Artist-first labels (`Artist — Title`) to make selection more natural.
+  * Artist-first labels (`Artist — Title`) to make selection more natural. (Thanks JM for the suggestion!)
 
 ### Testing / Validation
 
