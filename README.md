@@ -23,6 +23,7 @@
 
 
 The project structure is as follows:
+```bash
 PerformativeMusicRecommender/
 │
 ├── assets/
@@ -53,7 +54,7 @@ PerformativeMusicRecommender/
 ├── run.sh                        # Convenience script to run locally
 ├── README.md                     # Project documentation
 └── LICENSE                       # License for the project (Using MIT license as a sample)
-
+```
 
 ### Data / Models / Services
 
