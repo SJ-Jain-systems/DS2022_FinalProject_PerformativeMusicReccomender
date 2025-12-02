@@ -161,7 +161,7 @@ curl http://localhost:8080/health
 
 ![Input given, Laufey — From The Start, Laufey — Dreamer, & TV Girl — Blue Hair ](<assets/SampleOutput.png>)
 
-![Input given, 3 Big Theif songs!](<assets/SampleOutput2.png)
+![Input given, 3 Big Thief songs!](<assets/SampleOutput2.png>)
 
 ### Functionality
 
