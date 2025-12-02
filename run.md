@@ -2,7 +2,7 @@
 
 * Docker installed (e.g., Docker Desktop).
 * Repo cloned locally.
-* Optional: copy `.env.example` → `.env` and adjust any config variables if needed.
+* Copy `.env.example` → `.env` and adjust any config variables if needed.
 
 ### Build
 
