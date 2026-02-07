@@ -1,4 +1,4 @@
-# Performative Music Recommender (TESTING)
+# Vector-Based-Music-Recommender
 
 ## 1) Executive Summary
 
